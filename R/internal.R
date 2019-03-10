@@ -1,10 +1,59 @@
-#' @importFrom msm ptnorm
 
 ######################################################################
 # Probability of being above/below the futility boundary in stage I
 #
 ######################################################################
-library(msm) # needed for truncated normal
+# needed for truncated normal
+
+ptnorm <- function (q, mean = 0, sd = 1, lower = -Inf, upper = Inf, lower.tail = TRUE,
+                    log.p = FALSE)
+{
+  ret <- numeric(length(q))
+  if (lower.tail) {
+    ret[q < lower] <- 0
+    ret[q > upper] <- 1
+  }
+  else {
+    ret[q < lower] <- 1
+    ret[q > upper] <- 0
+  }
+  ret[upper < lower] <- NaN
+  ind <- q >= lower & q <= upper
+  if (any(ind)) {
+    denom <- pnorm(upper, mean, sd) - pnorm(lower, mean,
+                                            sd)
+    if (lower.tail)
+      qtmp <- pnorm(q, mean, sd) - pnorm(lower, mean, sd)
+    else qtmp <- pnorm(upper, mean, sd) - pnorm(q, mean,
+                                                sd)
+    if (log.p)
+      qtmp <- log(qtmp) - log(denom)
+    else qtmp <- qtmp/denom
+    ret[q >= lower & q <= upper] <- qtmp[ind]
+  }
+  ret
+}
+
+
+dtnorm <- function (x, mean = 0, sd = 1, lower = -Inf, upper = Inf, log = FALSE)
+{
+  ret <- numeric(length(x))
+  ret[x < lower | x > upper] <- if (log)
+    -Inf
+  else 0
+  ret[upper < lower] <- NaN
+  ind <- x >= lower & x <= upper
+  if (any(ind)) {
+    denom <- pnorm(upper, mean, sd) - pnorm(lower, mean,
+                                            sd)
+    xtmp <- dnorm(x, mean, sd, log)
+    if (log)
+      xtmp <- xtmp - log(denom)
+    else xtmp <- xtmp/denom
+    ret[x >= lower & x <= upper] <- xtmp[ind]
+  }
+  ret
+}
 
 ######################################
 # Function 1

@@ -1,5 +1,4 @@
 #' @export
-#' @importFrom msm ptnorm
 
 operatingChar <-function(alpha,information.fraction,th1,th2,int.l1,int.u1,int.l2,int.u2,f1){
 
