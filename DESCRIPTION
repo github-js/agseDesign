@@ -1,7 +1,6 @@
 Package: agseDesign
 Type: Package
-Title: Evaluating Operating Characteristics for Adaptive Group-Sequential Design
-    with Population Enrichment
+Title: Evaluating Operating Characteristics for Adaptive Group-Sequential Design with Population Enrichment
 Version: 0.0.1
 Author: Jaejoon Song, Arup K. Sinha
 Maintainer: Jaejoon Song <jaejoonsong@gmail.com>
